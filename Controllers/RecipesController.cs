@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAppAPI.Models;
 
 namespace WebAppAPI.Controllers
 {
@@ -11,28 +12,55 @@ namespace WebAppAPI.Controllers
     [ApiController]
     public class RecipesController : ControllerBase
     {
-        [HttpGet]
-        public string[] GetDishes()
-        {
-            string[] dishes = { "Oxtail", "Curry Chicken", "Dumplings" };
-            return dishes;
-        }
+        //[HttpGet]
+        //public string[] GetDishes()
+        //{
+        //    string[] dishes = { "Oxtail", "Curry Chicken", "Dumplings" };
+        //    return dishes;
+        //}
 
         [HttpGet]
-        public ActionResult GetRecipes()
+        public ActionResult GetRecipes([FromQuery]int count)
         {
-            string[] recipes = { "Oxtail", "Curry Chicken", "Dumplings" };
 
-            if (recipes.Any())
+            Recipe[] recipes =
             {
-                return NotFound();
-            }
+                new (){Title="Oxtail"},
+                new (){Title="Curry Chicken"},
+                new (){Title="Dumplings"},
+            };
+            return Ok(recipes.Take(count));
 
-            return Ok(recipes);
+
+        }
+
+        //[HttpGet]
+        //public ActionResult GetRecipes2([FromQuery]int count)
+        //{
+        //    string[] recipes = { "Oxtail", "Curry Chicken", "Dumplings" };
+
+        //    if (recipes.Any())
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(recipes.Take(count));
+
+            
+        //}
+
+        [HttpPost]
+        public ActionResult CreateNewRecipes([FromBody] Recipe newRecipe)
+        {
+            bool badThingsHappened = false;
+            if (badThingsHappened)
+                return BadRequest();
+
+            return Created("",newRecipe);
         }
 
 
-        [HttpDelete]
+        [HttpDelete("{id}")]    //  /api/recipes/1323
         public ActionResult DeleteRecipes()
         {
             bool badThingsHappened = false;
